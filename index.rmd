@@ -1,0 +1,66 @@
+---
+title: "Significance of RMSE on Parameters"
+author: "Hugo Day"
+date: "26 August 2018"
+output: ioslides_presentation
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+This presentation briefly illustrates how parameters can control how well fitting a linear model can be.
+
+We hope you'll see this can be a quick way to see how significant a variable's contribution to an output may be.
+
+## Comments on Dataset
+
+- A dataset of the demographic and socioeconomic data for Switerland in 1888 is used
+- We're concerned with how Fertility fits to the other parameters
+- The R^2, root mean squared estimate, will be used to estimate how much of the data is covered
+
+## Interactive slides
+
+In this slide select some variables. A linear model of it's dependence will be created at the percentage of the data variability covered by that model presented.
+
+```{r, echo=FALSE}
+# echo=F hides the code
+dataSet<-swiss
+```
+
+```{r echo = FALSE}
+# inputPanel defines the grey border around the slider
+# sliderInput sets up a slide bar and names the output `nreps` so it can be accessed in the plot below
+  inputPanel(
+  selectInput("parameters", label = "Select Variables",multiple=TRUE,choices = c('Agriculture','Examination','Education','Catholic','Infant.Mortality'), selected = 'Catholic'))
+```
+
+```{r echo = FALSE}
+  renderText({
+    listoffactors <- c(input$parameters)
+    outputEq<-reformulate(termlabels = listoffactors, response ="Fertility")
+    
+    # Build linear model based on input factors
+    
+
+    model<-lm(outputEq,data=dataSet)
+    
+    rmse<- (summary(model)$r.squared)
+    rmse<-format(rmse,nsmall=2)
+    rmseMod<- (summary(model)$r.squared*100)
+    rmseMod<-format(rmseMod,nsmall=2)
+    
+    string<-paste("The model that the Swiss dataset is being fitted to is ", deparse(outputEq),". ")
+    
+    
+    string<-paste(string,"The model chosen has a RMSE of ", rmse,". ")
+    string<-paste(string,"This means about ",rmseMod, "% of the data is represented by this model")
+  })
+```
+## Summary
+
+- This simple model has shown how some variables can be much more significant than others
+- The R^2 value from an linear model fit can be a useful judge on how significant to the variance a parameter/group of parameters can be
