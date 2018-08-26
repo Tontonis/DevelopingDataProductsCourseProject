@@ -1,0 +1,12 @@
+name: DevelopingDataProductsCourseProject
+title: DevelopingDataProductsCourseProject
+username:
+account: tontonis
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 408855
+bundleId: 1554823
+url: https://tontonis.shinyapps.io/DevelopingDataProductsCourseProject/
+when: 1535304231.6229
+asMultiple: FALSE
+asStatic: FALSE
